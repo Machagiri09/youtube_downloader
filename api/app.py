@@ -8,10 +8,6 @@ app = Flask(__name__, template_folder="templates")
 
 DOWNLOAD_DIR = tempfile.gettempdir()
 
-@app.route("/")
-def home():
-    return render_template("index.html")
-
 visit_count = 0
 
 @app.route("/")

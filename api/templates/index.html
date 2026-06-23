@@ -162,6 +162,29 @@
             display: block;
         }
 
+        /* Footer Stats */
+        .footer-stats {
+            margin-top: 2rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+            text-align: center;
+        }
+
+        .visitor-count {
+            font-size: 0.9rem;
+            color: #a5f3fc;
+            margin: 0.5rem 0;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-text {
+            font-size: 0.75rem;
+            color: rgba(241, 245, 249, 0.5);
+            margin: 0.25rem 0 0 0;
+            font-style: italic;
+        }
+
         /* Tablet and larger screens */
         @media (min-width: 600px) {
             body {
@@ -194,11 +217,11 @@
                 min-height: 44px;
             }
 
-            button:hover {
-                transform: translateY(-2px);
+            .error {
+                font-size: 0.95rem;
             }
 
-            .error {
+            .visitor-count {
                 font-size: 0.95rem;
             }
         }
@@ -240,6 +263,21 @@
                 padding: 0.7rem 1rem;
                 font-size: 0.9rem;
                 min-height: 40px;
+            }
+
+            .footer-stats {
+                margin-top: 0.75rem;
+                padding-top: 0.75rem;
+            }
+
+            .visitor-count {
+                font-size: 0.75rem;
+                margin: 0.25rem 0;
+            }
+
+            .footer-text {
+                font-size: 0.65rem;
+                margin: 0;
             }
         }
 
@@ -297,9 +335,12 @@
             <strong>❌ Error:</strong> {{ error }}
         </div>
         {% endif %}
+
+        <!-- Footer Stats Inside Card -->
+        <div class="footer-stats">
+            <p class="visitor-count">👥 {{ visitors }} visitor{{ 's' if visitors != 1 else '' }}</p>
+            <p class="footer-text">Built with Flask & yt-dlp</p>
+        </div>
     </div>
-    <p style="font-size: 0.8rem; color: #94a3b8; margin-top: 1rem;">
-    👥 {{ visitors }} visits
-</p>
 </body>
 </html>
