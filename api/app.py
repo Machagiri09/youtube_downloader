@@ -12,6 +12,14 @@ DOWNLOAD_DIR = tempfile.gettempdir()
 def home():
     return render_template("index.html")
 
+visit_count = 0
+
+@app.route("/")
+def home():
+    global visit_count
+    visit_count += 1
+    return render_template("index.html", visitors=visit_count)
+
 @app.route("/download", methods=["POST"])
 def download():
     video_url = request.form.get("url", "").strip()
