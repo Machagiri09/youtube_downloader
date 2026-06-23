@@ -32,8 +32,9 @@ def download():
         os.makedirs(download_subdir, exist_ok=True)
         
         ydl_opts = {
-            'format': 'best[ext=mp4]/best',
+            'format': 'best[filesize<300M][ext=mp4]/best[filesize<300M]',
             'outtmpl': os.path.join(download_subdir, 'video'),
+            'max_filesize': 300000000,  # 300MB limit
             'quiet': False,
             'no_warnings': False,
         }
@@ -72,12 +73,24 @@ def download():
         error_msg = str(e).lower()
         print(f"Exception: {error_msg}")
         
-        if "429" in error_msg or "403" in error_msg or "blocked" in error_msg:
-            return render_template("index.html", error="YouTube blocked the request. Please wait a moment and try again.")
-        elif "404" in error_msg or "not found" in error_msg:
-            return render_template("index.html", error="Video not found. Please check the URL.")
+        # Check for file size errors
+        if "file too large" in error_msg or "max_filesize" in error_msg or "files larger than" in error_msg:
+            return render_template("index.html", error="❌ Video is too large (max 300MB). Please try a shorter video or different quality.")
+        
+        # Check for YouTube blocks
+        elif "429" in error_msg or "403" in error_msg or "blocked" in error_msg:
+            return render_template("index.html", error="❌ YouTube blocked the request. Please wait a moment and try again.")
+        
+        # Check for invalid URL
+        elif "404" in error_msg or "not found" in error_msg or "video unavailable" in error_msg:
+            return render_template("index.html", error="❌ Video not found or unavailable. Please check the URL.")
+        
+        # Generic error
         else:
-            return render_template("index.html", error="Download failed. Please try again.")
+            return render_template("index.html", error="❌ Download failed. Please try again with a different video.")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    # Use this for Railway/production
+    app.run(host='0.0.0.0', port=5000)
+    # Or use this for local testing
+    # app.run(debug=True)
